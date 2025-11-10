@@ -1,0 +1,329 @@
+/* DAW.digital homepage style sheet */
+
+/* global styles: */
+
+@keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+      transform: translateY(-180px); /* Start 100px above its final position */
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-top-left-radius: 10px;
+}
+
+footer p {
+    padding-top: 5vw;
+    color: black;
+    text-align: right;
+    font-size: 1vw;
+    padding-right: 100px;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.navbar {
+    font-weight: lighter;
+    padding-left: 20px;
+    padding-top: 20px;
+    letter-spacing: -0.13px;
+    padding-bottom: 15px;
+    text-align: left;
+}
+
+.navbar a {
+    color: black;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 15px;
+}
+
+
+.navbar a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+.sub-body {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+
+/* homepage styles: */
+
+.logo-container img {
+    padding-top: 20vw;
+    margin: 0;
+    width: 45%;
+    animation: fadeIn 2s ease-in-out forwards;
+    animation: slideInFromTop 1s ease-out forwards;
+}
+
+.mission-statement h1 {
+    padding-top: 12vw;
+    font-size: 2.5vw;
+    text-align: left;
+    padding-left: 20vw;
+}
+
+.mission-statement p {
+    padding-top: 0.5vw;
+    font-size: 1.5vw;
+    font-weight: lighter;
+    text-align: left;
+    padding-bottom: 47px;
+    padding-left: 20vw;
+    padding-right: 20vw;
+}
+
+/* contact page styles: */ 
+
+.socials { 
+    display: inline-flex;
+    gap: 60px;
+}
+
+.socials img {
+    padding-top: 17vw;
+    width: 8vw;
+}
+
+.socials img:hover {
+    animation: bounce 0.6s ease-in;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+/* events page styles: */
+
+
+.past-events {
+    padding-top: 4vw;
+    display: inline-block;
+    text-align: left;
+}
+
+.past-events p {
+    font-weight: lighter;
+    line-height: 3.5;
+    letter-spacing: 1.5px;
+}
+
+.past-events a {
+    color: black;
+}
+
+.past-events a:hover {
+    color: red;
+}
+
+/* gallery navigation page styles: */ 
+
+.event-list h1 {
+    line-height: 2.5;
+    /*text-shadow: 1px 1px 2px rgb(0 0 0 / 10%);*/
+    padding-top: 90px;
+    padding-bottom: 100px;
+    letter-spacing: 2px;
+    font-size: 40px;
+    font-weight: lighter;
+}
+
+.event-list a {
+    text-decoration:none;
+    color: black;
+}
+
+.event-list a:hover {
+    text-decoration:underline;
+    color: red;
+}
+
+/* gallery styles: */ 
+
+.gallery h1 {
+    text-decoration: none;
+    padding-left: 20vw;
+    padding-top: 5vw;
+    text-align: left; 
+    font-size: 30px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.gallery a {
+    text-decoration: none;
+    color: black;
+}
+
+.gallery a:hover {
+    text-decoration: underline;
+    color: red;
+}
+
+.images {
+    padding-top: 50px;
+    scroll-padding-top: 50px;
+    padding-bottom: 2vw;
+}
+
+.images img {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    height: auto;
+}
+
+/* blog styles: */
+
+.blog-text h1 {
+    padding-top: 250px;
+    letter-spacing: 3px;
+    font-size: 60px;
+    font-weight: normal;
+}
+
+.blog-posts .post1 {
+    padding-top: 14vw;
+    font-size: 3vw;
+}
+
+/* media queries: */
+
+@media screen and (max-width: 768px) {
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        text-align: right;
+        padding: 1px;
+        font-size: 12px;
+        border-radius: 0; /* Remove border-radius for a full-width look */
+    }
+
+    .navbar {
+        padding-left: 0px;
+        text-align: center;
+    }
+
+    .navbar a {
+        font-size: 2vw;
+    }
+
+    .logo-container img {
+        padding-top: 250px;
+        width: 50%;
+    }
+
+    .mission-statement {
+        padding-top: 100px;
+    }
+
+    .mission-statement h1 {
+        font-size: 4.8vw;
+    }
+    .mission-statement p {
+        font-size: 2vw;
+    }
+
+    /* contact page styles: */ 
+    
+    .socials {
+        display: block;
+        gap: 100px;
+    }
+
+    .socials img {
+        padding-top: 270px;
+    }
+
+
+    /* events page styles: */
+
+    .past-events p {
+        padding-left: 20vw;
+        padding-right: 20vw;
+        padding-top: 70px;
+        padding-bottom: 10px;
+        font-size: 2vw;
+    }
+
+    /* gallery navigation page styles: */ 
+
+    .event-list h1 {
+        padding-top: 70px;
+        font-size: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    /* gallery styles: */ 
+
+    .gallery h1 {
+        padding-top: 10vw;
+        font-size: 20px;
+    }
+
+    .images img {
+        width: 90%; /* Makes images responsive while maintaining aspect ratio */
+        max-width: 300px; /* Prevents images from being too large on small screens */
+        height: auto;
+    }
+
+    /* blog styles: */
+
+    .blog-posts {
+        padding-top: 10vw;
+        text-align: center;
+    }
+
+    .blog-posts h1 {
+        padding-top: 20vw;
+        font-size: 5vw;
+    }
+
+    .blog-posts img {
+        height: auto;
+        width: 300px;
+    }
+
+    .blog-posts p {
+        font-size: 1vw;
+    }
+
+    
+
+}
