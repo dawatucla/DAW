@@ -1,5 +1,7 @@
 import './Blog.css';
 import { BlogPreview } from '../components/BlogPreview.js';
+import './Blog.css';
+import { BlogPreview } from '../components/BlogPreview.js';
 import React, {useEffect, useState} from 'react'
 import { db, auth } from "../firebase-config"
 import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
