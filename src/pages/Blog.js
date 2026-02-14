@@ -32,7 +32,7 @@ function Blog(){
                 <a href="../gallery/">GALLERY</a>
                 <a href="../blog/">BLOG</a>
             </div>
-            <div class = "sub-body">
+            <div class = "blog-body">
                 <div class = "blog-header">
                     <img src="/assets/DAW_logo.svg" alt="DAW logo" style={{ width: "60%" }}/>
                     <div style={{ marginTop: "10px", display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '60%' }}>
@@ -48,17 +48,17 @@ function Blog(){
                     </div>
                 </div>
                 <div class = "blog-posts">
-                    <div class="divider" />
+                    <div class="blog-divider" />
                     <BlogPreview idx={1} title="title 1" date="June 1, 2024" excerpt="meow"/>
-                    <div class="divider" />
+                    <div class="blog-divider" />
                     <BlogPreview idx={2} title="title 2" date="June 15, 2024" excerpt="meow"/>
-                    <div class="divider" />
+                    <div class="blog-divider" />
                     <BlogPreview idx={3} title="title 3" date="June 30, 2024" excerpt="meow"/>
-                    <div class="divider" />
+                    <div class="blog-divider" />
                     <BlogPreview idx={4} title="title 4" date="July 1, 2024" excerpt="meow"/>
-                    <div class="divider" />
+                    <div class="blog-divider" />
                     <BlogPreview idx={5} title="title 5" date="July 15, 2024" excerpt="meow"/>
-                    <div class="divider" />
+                    <div class="blog-divider" />
                     <BlogPreview idx={6} title="title 6" date="July 30, 2024" excerpt="meow"/>
                 </div>
             </div>
