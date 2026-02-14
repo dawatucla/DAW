@@ -15,6 +15,7 @@ import CreatePost from "./pages/AdminPages/CreatePost";
 import UploadToGallery from "./pages/AdminPages/UploadToGallery";
 
 import RequireAdmin from "./components/RequireAdmin";
+import Radio from "./pages/Radio";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
             </RequireAdmin>
           }
         />
+        <Route path="/radio" element={<Radio />} />
       </Routes>
     </Router>
   );
