@@ -3,24 +3,41 @@ import { BlogPreview } from '../components/BlogPreview.js';
 import React, {useEffect, useState} from 'react'
 import { db, auth } from "../firebase-config"
 import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
-// import AudioWave from '../components/AudioWave';
 
 function Blog(){
-    const [postLists, setPostList] = useState([]);
+    const [postList, setPostList] = useState([]);
     const postsCollectionRef = collection(db, "posts");
 
     const deletePost = async (id) => {
         const postDoc = doc(db, "posts", id);
         await deleteDoc(postDoc);
-    }
-    useEffect(() => {
-        const getPosts = async () => {
-            const data = await getDocs(postsCollectionRef);
-            setPostList(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
-        };
-
         getPosts();
-    }, [deletePost]);
+    }
+
+    const getPosts = async () => {
+        const data = await getDocs(postsCollectionRef);
+        setPostList(
+            data.docs.map((doc) => {
+                const postData = doc.data();
+                return {
+                    ...postData,
+                    id: doc.id,
+                    datePublished: postData.datePublished
+                        ? new Date(postData.datePublished.seconds * 1000)
+                        : null,
+                };
+            })
+        );
+    };
+
+
+    useEffect(() => {
+        getPosts();
+    }, []);
+
+    useEffect(() => {
+        console.log(postList);
+    }, [postList]);
 
     
     return (
@@ -48,18 +65,13 @@ function Blog(){
                     </div>
                 </div>
                 <div class = "blog-posts">
-                    <div class="blog-divider" />
-                    <BlogPreview idx={1} title="title 1" date="June 1, 2024" excerpt="meow"/>
-                    <div class="blog-divider" />
-                    <BlogPreview idx={2} title="title 2" date="June 15, 2024" excerpt="meow"/>
-                    <div class="blog-divider" />
-                    <BlogPreview idx={3} title="title 3" date="June 30, 2024" excerpt="meow"/>
-                    <div class="blog-divider" />
-                    <BlogPreview idx={4} title="title 4" date="July 1, 2024" excerpt="meow"/>
-                    <div class="blog-divider" />
-                    <BlogPreview idx={5} title="title 5" date="July 15, 2024" excerpt="meow"/>
-                    <div class="blog-divider" />
-                    <BlogPreview idx={6} title="title 6" date="July 30, 2024" excerpt="meow"/>
+                    <div className="blog-divider" />
+                    {postList.map((post, i) => (
+                        <React.Fragment key={post.id}>
+                            <BlogPreview idx={i + 1} title={post.title} date={post.datePublished} excerpt={post.excerpt}/>
+                            <div className="blog-divider" />
+                        </React.Fragment>
+                    ))}
                 </div>
             </div>
         </div>
