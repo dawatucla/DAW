@@ -14,6 +14,7 @@ import PatchPlus from "./GalleryPages/PATCH_+";
 import Ritual001 from "./GalleryPages/RITUAL_001";
 import Ritual002 from "./GalleryPages/RITUAL_002";
 import SecretAnniversary from "./GalleryPages/SECRET_ANNIVERSARY";
+import { Navbar } from "../components/Navbar.js";
 
 function GalleryList() {
   const items = [
@@ -70,14 +71,7 @@ export default function Gallery() {
 
   return (
     <div>
-      {/* Navbar lives once, above all children */}
-      <div className="navbar">
-        <Link to="/home">HOME</Link>
-        <Link to="/connect">CONNECT</Link>
-        <Link to="/events">EVENTS</Link>
-        <Link to="/gallery">GALLERY</Link>
-        <Link to="/blog">BLOG</Link>
-      </div>
+      <Navbar />
 
       {/* Child route renders here */}
       {element}

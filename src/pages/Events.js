@@ -1,14 +1,9 @@
+import { Navbar } from "../components/Navbar.js";
+
 function Events() {
   return (
     <div>
-      {/* header/nav */}
-      <div className="navbar">
-        <a href="../home/">HOME</a>
-        <a href="../connect/">CONNECT</a>
-        <a href="../events/">EVENTS</a>
-        <a href="../gallery/">GALLERY</a>
-        <a href="../blog/">BLOG</a>
-      </div>
+      <Navbar />
 
       {/* content */}
       <div className="sub-body">

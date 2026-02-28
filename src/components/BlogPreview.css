@@ -1,0 +1,40 @@
+.blog-preview{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: start;
+    border-radius: 5px;
+    gap: 2.5vw;
+    padding-left: 2vw;
+}
+
+.blog-preview p{
+    font-size: 1.5em;
+    color: white;
+    font-family: Helvetica;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.blog-preview .blog-idx{
+    font-size: 1.5em;
+    color: black;
+    font-family: Helvetica;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+    word-wrap: break-word;
+    line-height: 4.5vw;
+    margin: 0;
+}
+
+.blog-idx-container{
+    width: 4vw;
+    height: 4vw;
+    background: #BFD630;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+}
