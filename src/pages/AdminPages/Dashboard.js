@@ -11,10 +11,15 @@ function Dashboard() {
           <button>Create Post</button>
         </Link>
 
+        <Link to="/admin/manageposts">
+          <button>Manage Posts</button>
+        </Link>
+
         <Link to="/admin/uploadtogallery">
           <button>Upload to Gallery</button>
         </Link>
       </div>
+
     </div>
   );
 }
