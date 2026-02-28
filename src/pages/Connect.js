@@ -1,17 +1,10 @@
 import { Link } from "react-router-dom";
+import { Navbar } from "../components/Navbar.js";
 
 function Connect() {
   return (
     <div>
-      {/* Navbar */}
-      <div className="navbar">
-        <Link to="/home">HOME</Link>
-        <Link to="/connect">CONNECT</Link>
-        <Link to="/events">EVENTS</Link>
-        <Link to="/gallery">GALLERY</Link>
-        <Link to="/blog">BLOG</Link>
-      </div>
-
+      <Navbar />
       {/* Main content */}
       <div className="sub-body">
         <div className="socials">

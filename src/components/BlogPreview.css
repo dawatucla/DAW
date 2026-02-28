@@ -9,7 +9,7 @@
     padding-left: 2vw;
 }
 
-p{
+.blog-preview p{
     font-size: 1.5em;
     color: white;
     font-family: Helvetica;
@@ -18,7 +18,7 @@ p{
     white-space: nowrap;
 }
 
-.blog-idx{
+.blog-preview .blog-idx{
     font-size: 1.5em;
     color: black;
     font-family: Helvetica;

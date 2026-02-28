@@ -1,5 +1,6 @@
 import './Blog.css';
 import { BlogPreview } from '../components/BlogPreview.js';
+import { Navbar } from '../components/Navbar.js';
 import React, {useEffect, useState} from 'react'
 import { db, auth } from "../firebase-config"
 import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
@@ -42,24 +43,18 @@ function Blog(){
     
     return (
         <div>
-            <div class="navbar">
-                <a href="../home/">HOME</a>
-                <a href="../connect/">CONNECT</a>
-                <a href="../events/">EVENTS</a>
-                <a href="../gallery/">GALLERY</a>
-                <a href="../blog/">BLOG</a>
-            </div>
+            <Navbar />
             <div class = "blog-body">
                 <div class = "blog-header">
-                    <img src="/assets/DAW_logo.svg" alt="DAW logo" style={{ width: "60%" }}/>
-                    <div style={{ marginTop: "10px", display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '60%' }}>
+                    <img src="/assets/DAW_logo.svg" alt="DAW logo" style={{ width: "40vw" }}/>
+                    <div style={{ marginTop: "10px", display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '40vw' }}>
                         <h1>#blog</h1>
-                        <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                            <div style={{width: '7vw', height: '7vw', background: '#BFD630', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <img src="/assets/blog_assets/blog_arrow_down.svg" alt="blog arrow down" style={{ width: "6vh", height: "6vh" }}/>
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '1vw' }}>
+                            <div style={{width: '8vw', height: '8vw', background: '#BFD630', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <img src="/assets/blog_assets/blog_arrow_down.svg" alt="blog arrow down" style={{ width: "4vw" }}/>
                             </div>
-                            <div style={{width: '7vw', height: '7vw', background: '#FF1D8E', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <img src="/assets/blog_assets/B.svg" alt="blog B" style={{ width: "6vh", height: "6vh" }}/>
+                            <div style={{width: '8vw', height: '8vw', background: '#FF1D8E', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <img src="/assets/blog_assets/B.svg" alt="blog B" style={{ width: "4vw" }}/>
                             </div>
                         </div>
                     </div>

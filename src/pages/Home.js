@@ -1,14 +1,9 @@
+import { Navbar } from "../components/Navbar.js";
+
 function Home(){
     return (
         <body>
-            <div class="navbar">
-                <a href="../home/">HOME</a>
-                <a href="../connect/">CONNECT</a>
-                <a href="../events/">EVENTS</a>
-                <a href="../gallery/">GALLERY</a>
-                <a href="../blog/">BLOG</a>
-            </div>
-
+            <Navbar />
             <div class = "sub-body">
                 <div class = "mission-statement">
                     <h1>ABOUT US</h1>
