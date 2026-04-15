@@ -16,7 +16,7 @@ const galleryOptions = [
   "JACK",
   "PARTY_001",
   "PARTY_002",
-  "PATCH_+js",
+  "PATCH_+",
   "RITUAL_001",
   "RITUAL_002",
   "SECRET_ANNIVERSARY"
