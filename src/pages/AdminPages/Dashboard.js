@@ -1,10 +1,17 @@
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase-config.js";
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate("/admin");
+  };
+
   return (
     <div style={{ maxWidth: 600, margin: "2rem auto" }}>
       <h1>Admin Panel</h1>
-      <p>Select an action:</p>
 
       <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
         <Link to="/admin/createpost">
@@ -20,6 +27,9 @@ function Dashboard() {
         </Link>
       </div>
 
+      <button onClick={handleLogout} style={{ marginTop: "1rem" }}>
+        Log Out
+      </button>
     </div>
   );
 }
