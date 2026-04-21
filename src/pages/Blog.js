@@ -9,12 +9,6 @@ function Blog(){
     const [postList, setPostList] = useState([]);
     const postsCollectionRef = collection(db, "posts");
 
-    const deletePost = async (id) => {
-        const postDoc = doc(db, "posts", id);
-        await deleteDoc(postDoc);
-        getPosts();
-    }
-
     const getPosts = async () => {
         const data = await getDocs(postsCollectionRef);
         setPostList(

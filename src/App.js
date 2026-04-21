@@ -12,6 +12,7 @@ import Blog from "./pages/Blog";
 import Admin from "./pages/Admin"; // login
 import AdminDashboard from "./pages/AdminPages/Dashboard";
 import CreatePost from "./pages/AdminPages/CreatePost";
+import ManagePosts from "./pages/AdminPages/ManagePosts";
 import UploadToGallery from "./pages/AdminPages/UploadToGallery";
 
 import RequireAdmin from "./components/RequireAdmin";
@@ -44,6 +45,14 @@ function App() {
           element={
             <RequireAdmin>
               <CreatePost />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="/admin/manageposts"
+          element={
+            <RequireAdmin>
+              <ManagePosts />
             </RequireAdmin>
           }
         />

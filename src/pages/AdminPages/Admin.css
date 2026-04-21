@@ -1,0 +1,12 @@
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.createPostPage{
+    min-height: 100vh;
+    padding: 1vw;
+    display: flex;
+    justify-content: center;
+}

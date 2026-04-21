@@ -1,14 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { db, auth, storage } from "../../firebase-config";
 import { useNavigate } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { v4 } from 'uuid';
+import Quill from 'quill';
+import Editor from '../../components/Editor';
+import "./Admin.css";
+
+const Delta = Quill.import('delta');
 
 function CreatePost({isAuth}){
 
     const [ title, setTitle ] = useState("");
-    const [ postText, setPostText ] = useState("");
+    const [ author, setAuthor ] = useState("");
     // const [ fileUpload, setFileUpload ] = useState(null);
     // const [ hasAudio, setHasAudio ] = useState(false); 
     // const [ filev4, setFilev4 ] = useState("");
@@ -16,16 +21,22 @@ function CreatePost({isAuth}){
     const postCollectionRef = collection(db, "posts");
     let navigate = useNavigate();
 
+    const [lastChange, setLastChange] = useState();
+    const [range, setRange] = useState();
+    const quillRef = useRef();
+
     const createPost = async () => {
+        const content = quillRef.current.getContents();
         await addDoc(postCollectionRef, 
             {
                 title,
-                postText,
-                author: {name: "Admin", id: 0 },
+                content: content.ops,  // Store just the ops array
+                author: {name: author, id: 0 },
+                datePublished: new Date(),
                 // hasAudio,
                 // audioURL,
             });
-            navigate("/");
+            navigate("/admin/dashboard");
     };
 
 
@@ -66,19 +77,33 @@ function CreatePost({isAuth}){
                     />
                 </div>
                 <div className="inputGroup">
-                    <label>Post:</label>
-                    <textarea 
-                    placeholder="type that shit out twin ฅ^>⩊<^ ฅ"
+                    <label>Author:</label>
+                    <input 
+                    placeholder="Your name" 
                     onChange={(event) => {
-                        setPostText(event.target.value);
-                    }}
+                        setAuthor(event.target.value);
+                    }} 
+                    />
+                </div>
+                <div className="inputGroup">
+                    <label>Post:</label>
+                    <Editor
+                        ref={quillRef}
+                        defaultValue={new Delta()
+                            .insert("type that shit out twin ฅ^>⩊<^ ฅ")
+                            .insert('\n')
+                        }
+                        onSelectionChange={setRange}
+                        onTextChange={setLastChange}
                     />
                 </div>
                 {/* <div className="fileUpload">
                     <input type="file" onChange={(event) =>{setFileUpload(event.target.files[0])}} />
                     <button onClick={uploadFile} >Upload Audio</button>
                 </div> */}
-                <button onClick={createPost}>Submit Post</button>
+                {title.length !== 0 && author.length !== 0 ? (
+                    <button onClick={createPost}>Submit Post</button>
+                ) : <p>Please fill all fields to post!</p>}
             </div>
         </div>
     );
