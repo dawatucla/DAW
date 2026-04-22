@@ -32,6 +32,7 @@ export default function Admin() {
         alert("✌︎㋡ access denied buster ╭∩╮(•̀_•́)╭∩╮");
         return;
       }
+      localStorage.setItem("isAdmin", "true");
       navigate("/admin/dashboard");
     }
     catch(error){
