@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar"
+import dawLogo from "../assets/dawlogotransparent.png";
 
 function Intro() {
   return (
@@ -9,7 +10,7 @@ function Intro() {
         <div className="logo-container">
           <Link to="/home">
             <img
-              src="/assets/dawlogotransparent.png"
+              src={dawLogo}
               alt="DAW Logo"
             />
           </Link>
