@@ -3,7 +3,9 @@ import { db, storage, auth } from "../../firebase-config";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import imageCompression from "browser-image-compression";
 console.log("Current Firebase user:", auth.currentUser);
+
 
 const galleryOptions = [
   "ALICE_THE_CLUB",
@@ -36,6 +38,17 @@ const handleFileChange = (e) => {
   setFiles(chosenFiles);
 };
 
+const compressImagetoWebP = async (file) => {
+  const options = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
+    fileType: "image/webp",
+    initialQuality: 0.8,
+  };
+  return await imageCompression(file, options);
+};
+
 const handleUpload = async (e) => {
   e.preventDefault();
   setMessage("");
@@ -58,13 +71,14 @@ const handleUpload = async (e) => {
 
     for (const file of files) {
       console.log("Starting file:", file.name, file.size);
+      const compressedFile = await compressImagetoWebP(file);
+      const originalNameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
+      const uniqueName = `${uuidv4()}-${originalNameWithoutExtension}.webp`;
 
-      const uniqueName = `${uuidv4()}-${file.name}`;
-      const storagePath = `galleryImages/${selectedPage}/${uniqueName}`;
+      const storagePath = `/${selectedPage}/${uniqueName}`;
       const storageRef = ref(storage, storagePath);
 
-      console.log("Uploading to Storage:", storagePath);
-      await uploadBytes(storageRef, file);
+      await uploadBytes(storageRef, compressedFile);
       console.log("Storage upload finished:", file.name);
 
       console.log("Getting download URL...");
