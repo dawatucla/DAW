@@ -4,6 +4,19 @@
     margin-bottom: 20px;
 }
 
+.createPostContainer {
+    width: min(100%, 1100px);
+}
+
+.inputGroup .ql-toolbar,
+.inputGroup .ql-container {
+    width: 100%;
+}
+
+.inputGroup .ql-editor {
+    min-height: 300px;
+}
+
 .createPostPage{
     min-height: 100vh;
     padding: 1vw;

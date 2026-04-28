@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { db, auth, storage } from "../../firebase-config";
 import { useNavigate } from 'react-router-dom';
@@ -39,33 +39,54 @@ function CreatePost({isAuth}){
             navigate("/admin/dashboard");
     };
 
+    /* Editor customization */
 
-    // const uploadFile = async () => {
-    //     if (!fileUpload) return;
+    const imageHandler = () => {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
 
-    //     const ext = fileUpload.name.split('.').pop();
-    //     const id = v4();
-    //     const fileName = `${id}.${ext}`;
-    //     const fileRef = ref(storage, fileName);
+        input.onchange = async () => {
+            const file = input.files[0];
+            if (!file) return;
 
-    //     try {
-    //         const snapshot = await uploadBytes(fileRef, fileUpload);
-    //         const url = await getDownloadURL(snapshot.ref);
+            const fileName = `postImages/${v4()}_${file.name}`;
+            const storageRef = ref(storage, fileName);
 
-    //         setHasAudio(true);
-    //         setAudioURL(url);
+            try {
+                const snapshot = await uploadBytes(storageRef, file);
+                const url = await getDownloadURL(snapshot.ref);
 
-    //         alert(`FILE UPLOADED ${fileName}`);
-    //         console.log("FILE UPLOADED", url);
-    //     } catch (err) {
-    //         console.error(err);
-    //         alert(`Upload failed: ${err.message}`);
-    //     }
-    // };
+                const quill = quillRef.current; 
+                const range = quill.getSelection();
+                quill.insertEmbed(range.index, 'image', url);
+                quill.setSelection(range.index + 1);
+            } catch (error) {
+                console.error("Upload failed:", error);
+            }
+        };
+    };
+
+    // Define the modules object
+    const modules = useMemo(() => ({
+            toolbar: {
+                container: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'link'],
+                    ['clean']
+                ],
+                handlers: {
+                    image: imageHandler
+                }
+            }
+        }
+    ), []);
 
     return (
         <div className="createPostPage">
-            <div className="cpContainer">
+            <div className="createPostContainer">
                 <h1>Create Post</h1>
                 <div className="inputGroup">
                     <label>Title:</label>
@@ -89,6 +110,7 @@ function CreatePost({isAuth}){
                     <label>Post:</label>
                     <Editor
                         ref={quillRef}
+                        modules={modules}
                         defaultValue={new Delta()
                             .insert("type that shit out twin ฅ^>⩊<^ ฅ")
                             .insert('\n')

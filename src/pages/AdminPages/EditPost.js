@@ -1,8 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { useParams } from 'react-router-dom';
 import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from "../../firebase-config";
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { db, auth, storage } from "../../firebase-config";
 import { useNavigate } from 'react-router-dom';
+import { v4 } from 'uuid';
 import Quill from 'quill';
 import Editor from '../../components/Editor';
 import "./Admin.css";
@@ -72,9 +74,54 @@ function EditPost({isAuth}){
         fetchPostData();
     }, [id]);
 
+    /* Editor customization */
+
+    const imageHandler = () => {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+
+        input.onchange = async () => {
+            const file = input.files[0];
+            if (!file) return;
+
+            const fileName = `postImages/${v4()}_${file.name}`;
+            const storageRef = ref(storage, fileName);
+
+            try {
+                const snapshot = await uploadBytes(storageRef, file);
+                const url = await getDownloadURL(snapshot.ref);
+
+                const quill = quillRef.current; 
+                const range = quill.getSelection();
+                quill.insertEmbed(range.index, 'image', url);
+                quill.setSelection(range.index + 1);
+            } catch (error) {
+                console.error("Upload failed:", error);
+            }
+        };
+    };
+
+    // Define the modules object
+    const modules = useMemo(() => ({
+            toolbar: {
+                container: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'link'],
+                    ['clean']
+                ],
+                handlers: {
+                    image: imageHandler
+                }
+            }
+        }
+    ), []);
+
     return (
         <div className="createPostPage">
-            <div className="cpContainer">
+            <div className="createPostContainer">
                 <h1>Edit Post</h1>
                 <div className="inputGroup">
                     <label>Title:</label>
@@ -101,6 +148,7 @@ function EditPost({isAuth}){
                     {initialContent ? (
                         <Editor
                             ref={quillRef}
+                            modules={modules}
                             defaultValue={initialContent}
                             onSelectionChange={setRange}
                             onTextChange={setLastChange}
