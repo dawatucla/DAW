@@ -4,7 +4,7 @@ import 'quill/dist/quill.snow.css';
 
 // Editor is an uncontrolled React component
 const Editor = forwardRef(
-  ({ readOnly, defaultValue, onTextChange, onSelectionChange }, ref) => {
+  ({ readOnly, defaultValue, onTextChange, onSelectionChange, modules }, ref) => {
     const containerRef = useRef(null);
     const defaultValueRef = useRef(defaultValue);
     const onTextChangeRef = useRef(onTextChange);
@@ -26,6 +26,7 @@ const Editor = forwardRef(
       );
       const quill = new Quill(editorContainer, {
         theme: 'snow',
+        modules: modules
       });
 
       ref.current = quill;
@@ -46,7 +47,7 @@ const Editor = forwardRef(
         ref.current = null;
         container.innerHTML = '';
       };
-    }, [ref]);
+    }, [ref, modules]);
 
     return <div ref={containerRef}></div>;
   },

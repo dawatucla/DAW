@@ -1,12 +1,11 @@
 import { db, auth } from "../../firebase-config"
 import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function ManagePosts({isAuth}){
     const [postList, setPostList] = useState([]);
     const postsCollectionRef = collection(db, "posts");
-
-
 
     const deletePost = async (id) => {
         const postDoc = doc(db, "posts", id);
@@ -30,6 +29,14 @@ function ManagePosts({isAuth}){
         );
     };
 
+    const handleDeletePost = async (id) => {
+        // Display a confirmation dialog before deleting
+        const confirmDelete = window.confirm("Are you sure you want to delete this post? This action cannot be undone.");
+        if (!confirmDelete) return;
+        await deletePost(id);
+        getPosts();
+    }
+
     useEffect(() => {
         getPosts();
     }, []);
@@ -43,8 +50,10 @@ function ManagePosts({isAuth}){
                         <h2>{post.title}</h2>
                         <p>{post.author.name}</p>
                         <p>{post.datePublished ? post.datePublished.toDateString() : "No date"}</p>
-                        <button onClick={() => deletePost(post.id)}>Delete Post</button>
-                        <button>Edit Post</button>
+                        <button onClick={() => handleDeletePost(post.id)}>Delete Post</button>
+                        <Link to={`/admin/editpost/${post.id}`}>
+                            <button>Edit Post</button>
+                        </Link>
                     </div>
                 ))}
             </div>

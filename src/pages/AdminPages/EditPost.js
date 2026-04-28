@@ -1,26 +1,27 @@
 import React, {useState, useEffect, useRef, useMemo} from 'react';
-import { addDoc, collection } from 'firebase/firestore';
+import { useParams } from 'react-router-dom';
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, auth, storage } from "../../firebase-config";
 import { useNavigate } from 'react-router-dom';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { v4 } from 'uuid';
 import Quill from 'quill';
 import Editor from '../../components/Editor';
 import "./Admin.css";
 import imageCompression from "browser-image-compression";
 
-
 const Delta = Quill.import('delta');
 
-function CreatePost({isAuth}){
+function EditPost({isAuth}){
+
+    // get id from route params when this page is mounted at /admin/edit/:id
+    const params = useParams();
+    const id = params.id;
 
     const [ title, setTitle ] = useState("");
     const [ author, setAuthor ] = useState("");
-    // const [ fileUpload, setFileUpload ] = useState(null);
-    // const [ hasAudio, setHasAudio ] = useState(false); 
-    // const [ filev4, setFilev4 ] = useState("");
-    // const [ audioURL, setAudioURL ] = useState("");
     const postCollectionRef = collection(db, "posts");
+    const [initialContent, setInitialContent] = useState(null);
     let navigate = useNavigate();
 
     const [lastChange, setLastChange] = useState();
@@ -29,17 +30,50 @@ function CreatePost({isAuth}){
 
     const createPost = async () => {
         const content = quillRef.current.getContents();
-        await addDoc(postCollectionRef, 
-            {
-                title,
-                content: content.ops,  // Store just the ops array
-                author: {name: author, id: 0 },
-                datePublished: new Date(),
-                // hasAudio,
-                // audioURL,
-            });
-            navigate("/admin/dashboard");
+        const payload = {
+            title,
+            content: content.ops,  // Store just the ops array
+            author: {name: author, id: 0 },
+            datePublished: new Date(),
+        };
+
+        if (id) {
+            // update existing post
+            const postDocRef = doc(db, 'posts', id);
+            await updateDoc(postDocRef, payload);
+        } else {
+            // create new post
+            await addDoc(postCollectionRef, payload);
+        }
+
+        navigate('/admin/manageposts');
     };
+
+    // load post data on mount
+    useEffect(() => {
+        if (!id) return;
+
+        // fetch post data from firestore using id
+        const fetchPostData = async () => {
+            try {
+                const postDoc = doc(db, "posts", id);
+                const postSnap = await getDoc(postDoc);
+                if (postSnap.exists()) {
+                    const postData = postSnap.data();
+                    setTitle(postData.title || "");
+                    setAuthor((postData.author && postData.author.name) || "");
+                    const ops = postData.content || [];
+                    setInitialContent(new Delta(ops));
+                    console.log("Fetched post data:", postData);
+                } else {
+                    console.error("No such document!");
+                }
+            } catch (err) {
+                console.error('Error fetching post:', err);
+            }
+        };
+        fetchPostData();
+    }, [id]);
 
     /* Editor customization */
 
@@ -84,7 +118,6 @@ function CreatePost({isAuth}){
         };
     };
 
-
     // Define the modules object
     const modules = useMemo(() => ({
             toolbar: {
@@ -104,11 +137,12 @@ function CreatePost({isAuth}){
     return (
         <div className="createPostPage">
             <div className="createPostContainer">
-                <h1>Create Post</h1>
+                <h1>Edit Post</h1>
                 <div className="inputGroup">
                     <label>Title:</label>
                     <input 
                     placeholder="Title... ₍^. .^₎⟆" 
+                    value={title}
                     onChange={(event) => {
                         setTitle(event.target.value);
                     }} 
@@ -118,6 +152,7 @@ function CreatePost({isAuth}){
                     <label>Author:</label>
                     <input 
                     placeholder="Your name" 
+                    value={author}
                     onChange={(event) => {
                         setAuthor(event.target.value);
                     }} 
@@ -125,21 +160,18 @@ function CreatePost({isAuth}){
                 </div>
                 <div className="inputGroup">
                     <label>Post:</label>
-                    <Editor
-                        ref={quillRef}
-                        modules={modules}
-                        defaultValue={new Delta()
-                            .insert("type that shit out twin ฅ^>⩊<^ ฅ")
-                            .insert('\n')
-                        }
-                        onSelectionChange={setRange}
-                        onTextChange={setLastChange}
-                    />
+                    {initialContent ? (
+                        <Editor
+                            ref={quillRef}
+                            modules={modules}
+                            defaultValue={initialContent}
+                            onSelectionChange={setRange}
+                            onTextChange={setLastChange}
+                        />
+                    ) : (
+                        <p>Loading post content...</p>
+                    )}
                 </div>
-                {/* <div className="fileUpload">
-                    <input type="file" onChange={(event) =>{setFileUpload(event.target.files[0])}} />
-                    <button onClick={uploadFile} >Upload Audio</button>
-                </div> */}
                 {title.length !== 0 && author.length !== 0 ? (
                     <button onClick={createPost}>Submit Post</button>
                 ) : <p>Please fill all fields to post!</p>}
@@ -148,4 +180,4 @@ function CreatePost({isAuth}){
     );
 }
 
-export default CreatePost;
+export default EditPost;
