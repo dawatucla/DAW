@@ -7,6 +7,8 @@ import { v4 } from 'uuid';
 import Quill from 'quill';
 import Editor from '../../components/Editor';
 import "./Admin.css";
+import imageCompression from "browser-image-compression";
+
 
 const Delta = Quill.import('delta');
 
@@ -41,6 +43,17 @@ function CreatePost({isAuth}){
 
     /* Editor customization */
 
+    const compressImagetoWebP = async (file) => {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+        fileType: "image/webp",
+        initialQuality: 0.8,
+      };
+      return await imageCompression(file, options);
+    };
+
     const imageHandler = () => {
         const input = document.createElement('input');
         input.setAttribute('type', 'file');
@@ -51,11 +64,14 @@ function CreatePost({isAuth}){
             const file = input.files[0];
             if (!file) return;
 
-            const fileName = `postImages/${v4()}_${file.name}`;
+            const compressedFile = await compressImagetoWebP(file);
+            const originalNameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
+            const uniqueName = `${v4()}-${originalNameWithoutExtension}.webp`;
+            const fileName = `postImages/${uniqueName}`;
             const storageRef = ref(storage, fileName);
 
             try {
-                const snapshot = await uploadBytes(storageRef, file);
+                const snapshot = await uploadBytes(storageRef, compressedFile);
                 const url = await getDownloadURL(snapshot.ref);
 
                 const quill = quillRef.current; 
@@ -67,6 +83,7 @@ function CreatePost({isAuth}){
             }
         };
     };
+
 
     // Define the modules object
     const modules = useMemo(() => ({
